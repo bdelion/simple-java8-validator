@@ -12,9 +12,8 @@
   <artifactId>simple-java8-validator</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>FIFIZ :: Socle Java :: simple-java8-validator</name>
+  <name>FIFIZ :: Java App :: simple-java8-validator</name>
   <description>Application quickstart permettant de valider les évolutions du pom parent `fr.fifiz.socle.java:java-parent`</description>
-
 
   <!-- Gestionnaire de code source -->
   <!-- https://github.com/kevinsawicki/github-maven-example/blob/master/example/pom.xml -->
@@ -24,4 +23,11 @@
     <developerConnection>scm:git:git@github.com:bdelion/simple-java8-validator.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
+
+  <properties>
+    <!-- Assembly -->
+    <maven-assembly-plugin-skip>false</maven-assembly-plugin-skip>
+    <main-class>fr.fifiz.socle.java.SimpleJava8ValidatorApp</main-class>
+  </properties>
+
 </project>
