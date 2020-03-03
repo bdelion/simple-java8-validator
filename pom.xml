@@ -30,4 +30,17 @@
     <main-class>fr.fifiz.socle.java.SimpleJava8ValidatorApp</main-class>
   </properties>
 
+  <dependencies>
+    <!-- Pour les tests -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>
