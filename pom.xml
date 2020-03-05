@@ -38,7 +38,6 @@
           </snapshots>
       </repository>
   </repositories>
-
   <properties>
     <!-- Assembly -->
     <maven-assembly-plugin-skip>false</maven-assembly-plugin-skip>

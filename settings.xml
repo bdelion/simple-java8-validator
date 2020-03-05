@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <activeProfiles>
+    <activeProfile>my-github-repository</activeProfile>
+  </activeProfiles>
+
+  <profiles>
+    <profile>
+      <id>my-github-repository</id>
+      <repositories>
+        <repository>
+          <id>github-bdelion</id>
+          <name>GitHub bdelion Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/bdelion</url>
+        </repository>
+        <repository>
+          <id>github-bdelion-java-parent</id>
+          <name>GitHub bdelion/java-parent Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/bdelion/java-parent</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
+  <servers>
+    <server>
+      <id>github-bdelion</id>
+      <username>${env.GITHUB_USERNAME}</username>
+      <password>${env.GITHUB_TOKEN}</password>
+    </server>
+    <server>
+      <id>github-bdelion-java-parent</id>
+      <username>${env.GITHUB_USERNAME}</username>
+      <password>${env.GITHUB_TOKEN}</password>
+    </server>
+  </servers>
+</settings>
