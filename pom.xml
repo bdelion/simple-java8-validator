@@ -10,7 +10,7 @@
   <!-- Definition de l'artefact -->
   <groupId>fr.fifiz.training.app.java</groupId>
   <artifactId>simple-java8-validator</artifactId>
-  <version>1.0.0-1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>FIFIZ :: Java App :: simple-java8-validator</name>
   <description>Application quickstart permettant de valider les évolutions du pom parent `fr.fifiz.socle.java:java-parent`</description>
