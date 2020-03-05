@@ -46,5 +46,5 @@ jobs:
       - name: Publish to GitHub Packages Apache Maven
         run: mvn -B -e -Dmaven.wagon.http.pool=false -DskipTests deploy --file pom.xml
         env:
-          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_USERNAME: x-access-token
           GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
