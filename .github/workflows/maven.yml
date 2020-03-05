@@ -1,0 +1,43 @@
+name: Java CI with Maven
+
+on: [push]
+
+jobs:
+  get-context-info:
+    name: Get GitHub and Context informations
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    # for debugging
+    - name: Dump env
+      run: |
+        env | sort
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+    - name: Dump job context
+      env:
+        JOB_CONTEXT: ${{ toJson(job) }}
+      run: echo "$JOB_CONTEXT"
+
+  build-test-package-deploy-maven:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Check out from version control
+        uses: actions/checkout@v2
+      - name: Build with Maven
+        run: mvn -U clean install --file pom.xml
+      - name: Test with Maven
+        run: mvn -U -Dmaven.main.skip test --file pom.xml
+      - name: Package with Maven
+        run: mvn -U -Dmaven.main.skip -DskipTests verify --file pom.xml
+      - name: Deploy with Maven
+        run: mvn -DskipTests deploy --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
