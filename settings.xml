@@ -21,7 +21,7 @@
         <repository>
           <id>github-bdelion-simple-java8-validator</id>
           <name>GitHub bdelion/java-parent Apache Maven Packages</name>
-          <url>https://maven.pkg.github.com/bdelion/java-parent</url>
+          <url>https://maven.pkg.github.com/bdelion/simple-java8-validator</url>
         </repository>
       </repositories>
     </profile>
