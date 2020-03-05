@@ -31,6 +31,12 @@ jobs:
           java-version: 1.8
       - name: Check out from version control
         uses: actions/checkout@v2
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Create version number
         run: |
           echo $(echo $GITHUB_SHA | cut -c1-7)
