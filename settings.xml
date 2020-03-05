@@ -18,6 +18,11 @@
           <name>GitHub bdelion/java-parent Apache Maven Packages</name>
           <url>https://maven.pkg.github.com/bdelion/java-parent</url>
         </repository>
+        <repository>
+          <id>github-bdelion-simple-java8-validator</id>
+          <name>GitHub bdelion/java-parent Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/bdelion/java-parent</url>
+        </repository>
       </repositories>
     </profile>
   </profiles>
@@ -30,6 +35,11 @@
     </server>
     <server>
       <id>github-bdelion-java-parent</id>
+      <username>${env.GITHUB_USERNAME}</username>
+      <password>${env.GITHUB_TOKEN}</password>
+    </server>
+    <server>
+      <id>github-bdelion-simple-java8-validator</id>
       <username>${env.GITHUB_USERNAME}</username>
       <password>${env.GITHUB_TOKEN}</password>
     </server>
