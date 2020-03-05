@@ -47,5 +47,5 @@ jobs:
         # run: mvn -B -e -Dmaven.wagon.http.pool=false -DskipTests deploy --file pom.xml
         run: mvn -B -e -DskipTests deploy --file pom.xml
         env:
-          #GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_USERNAME: ${{ github.actor }}
           GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
