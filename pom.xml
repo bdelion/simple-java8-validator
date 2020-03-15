@@ -27,9 +27,9 @@
   <!-- Repositories nécessaire pour avoir accès aux packages GitHub -->
   <repositories>
       <repository>
-          <id>github-bdelion</id>
-          <name>GitHub bdelion Apache Maven Packages</name>
-          <url>https://maven.pkg.github.com/bdelion</url>
+          <id>github-bdelion-java-parent</id>
+          <name>GitHub bdelion/java-parent Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/bdelion/java-parent</url>
           <releases>
               <enabled>true</enabled>
           </releases>
