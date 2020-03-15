@@ -63,7 +63,6 @@ jobs:
           echo "::set-output name=shorted::${GITHUB_SHA::8}"
           echo "Short SHA: ${GITHUB_SHA::8}"
       - name: Print short SHA
-        id: short-sha
         run: |
           echo "Short SHA: ${{steps.short-sha.outputs.shorted}}"
       - name: Create version number
