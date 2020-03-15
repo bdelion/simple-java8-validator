@@ -24,6 +24,21 @@
     <tag>HEAD</tag>
   </scm>
 
+  <!-- Repositories nécessaire pour avoir accès aux packages GitHub -->
+  <repositories>
+      <repository>
+          <id>github-bdelion</id>
+          <name>GitHub bdelion Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/bdelion</url>
+          <releases>
+              <enabled>true</enabled>
+          </releases>
+          <snapshots>
+              <enabled>true</enabled>
+          </snapshots>
+      </repository>
+  </repositories>
+
   <properties>
     <!-- Assembly -->
     <maven-assembly-plugin-skip>false</maven-assembly-plugin-skip>
