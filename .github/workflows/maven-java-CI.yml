@@ -49,10 +49,16 @@ jobs:
         run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout
       - name: Build with Maven
         run: mvn -U clean compile --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test with Maven
         run: mvn -U -Dmaven.main.skip test --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Verify with Maven
         run: mvn -U -Dmaven.main.skip -Dunit.test.skip verify --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #TODO - name: Set Leak Period [SonarQube]
       #run: checkout du parent commun
       #run: mvn -U clean verify '-Dmaven.test.failure.ignore=true'
