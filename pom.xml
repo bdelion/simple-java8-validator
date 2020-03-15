@@ -24,6 +24,21 @@
     <tag>HEAD</tag>
   </scm>
 
+  <!-- Repositories nécessaire pour avoir accès aux packages GitHub -->
+  <repositories>
+    <repository>
+      <id>github</id>
+      <name>GitHub bdelion/java-parent Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/bdelion/java-parent</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <properties>
     <!-- Assembly -->
     <maven-assembly-plugin-skip>false</maven-assembly-plugin-skip>
