@@ -57,6 +57,7 @@ jobs:
           echo "Version initiale: ${BUILD_VERSION_INIT}"
       - name: Get short SHA
         run: |
+          echo "Version initiale: ${BUILD_VERSION_INIT}"
           echo "Short SHA: ${GITHUB_SHA::8}"
       - name: Create version number
         id: create-version-number
