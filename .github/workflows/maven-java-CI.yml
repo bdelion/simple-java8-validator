@@ -33,6 +33,12 @@ jobs:
         run: mvn -version
       - name: Check out from version control
         uses: actions/checkout@v2
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Get groupId
         run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.groupId' -q -DforceStdout
         env:
