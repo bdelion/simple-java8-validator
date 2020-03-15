@@ -52,19 +52,20 @@ jobs:
       - name: Get artifactId
         run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.artifactId' -q -DforceStdout
       - name: Get version
+        id: build-version-initial
         run: |
-          BUILD_VERSION_INIT=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout)
-          echo "Version initiale: ${BUILD_VERSION_INIT}"
+          echo "::set-output name=version::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout)"
+          echo "Version initiale: ${{steps.build-version-initial.outputs.version}}"
       - name: Get short SHA
         run: |
-          echo "Version initiale: ${BUILD_VERSION_INIT}"
+          echo "Version initiale: ${{steps.build-version-initial.outputs.version}}"
           echo "Short SHA: ${GITHUB_SHA::8}"
       - name: Create version number
         id: create-version-number
         uses: frabert/replace-string-action@v1.1
         with:
           pattern: '^(.*)-SNAPSHOT$'
-          string: ${BUILD_VERSION_INIT}
+          string: ${{steps.build-version-initial.outputs.version}}
           replace-with: '$1-${GITHUB_SHA::8}-SNAPSHOT'
       - name: Set version number
         env:
