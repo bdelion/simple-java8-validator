@@ -55,16 +55,13 @@ jobs:
         id: build-version-initial
         run: |
           echo "::set-output name=version::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout)"
-          echo "Version initiale: ${{steps.build-version-initial.outputs.version}}"
+          echo "Version initiale: ${{version}}"
       - name: Get short SHA
         id: short-sha
         run: |
           echo "Version initiale: ${{steps.build-version-initial.outputs.version}}"
           echo "::set-output name=shorted::${GITHUB_SHA::8}"
-          echo "Short SHA: ${GITHUB_SHA::8}"
-      - name: Print short SHA
-        run: |
-          echo "Short SHA: ${{steps.short-sha.outputs.shorted}}"
+          echo "Version initiale: ${{shorted}}"
       - name: Create version number
         id: create-version-number
         uses: frabert/replace-string-action@v1.1
