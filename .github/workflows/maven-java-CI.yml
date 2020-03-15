@@ -72,7 +72,7 @@ jobs:
       #TODO - name: Quality Gate [SonarQube]
       #run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]' '-Dsonar.gitlab.ref_name=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.commit_sha=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.project_id=3555'
       - name: Publish to GitHub Packages Apache Maven
-        run: mvn -U -Dmaven.main.skip -Dunit.test.skip -Dintegration.test.skip deploy --file pom.xml
+        run: mvn -e -x -U -Dmaven.main.skip -Dunit.test.skip -Dintegration.test.skip deploy --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Site with Maven
