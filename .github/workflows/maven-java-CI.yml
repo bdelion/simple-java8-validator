@@ -54,21 +54,21 @@ jobs:
       - name: Get version
         id: build-version-initial
         run: |
-          echo "::set-output name=version::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout)"
-          echo "Version initiale: ${{outputs.version}}"
+          echo "::set-env name=VERSION::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout)"
+          echo "Version initiale: ${{env.MVN_VERSION}}"
       - name: Get short SHA
         id: short-sha
         run: |
-          echo "Version initiale: ${{steps.build-version-initial.outputs.version}}"
-          echo "::set-output name=shorted::${GITHUB_SHA::8}"
-          echo "Version initiale: ${{shorted}}"
+          echo "Version initiale: ${{env.MVN_VERSION}}"
+          echo "::set-env name=COMMIT_ID_SHORT::${GITHUB_SHA::8}"
+          echo "Short commitId: ${{env.COMMIT_ID_SHORT}}"
       - name: Create version number
         id: create-version-number
         uses: frabert/replace-string-action@v1.1
         with:
           pattern: '^(.*)-SNAPSHOT$'
-          string: ${{steps.build-version-initial.outputs.version}}
-          replace-with: '$1-${{steps.short-sha.outputs.shorted}}-SNAPSHOT'
+          string: ${{env.MVN_VERSION}}
+          replace-with: '$1-${{env.COMMIT_ID_SHORT}}-SNAPSHOT'
       - name: Set version number
         run: |
           echo "New version: ${{ steps.create-version-number.outputs.replaced }}"
