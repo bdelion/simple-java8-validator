@@ -43,9 +43,10 @@ jobs:
         # If we split on '/' and take the 3rd value,
         # we can get the release name.
         run: |
+          echo "Ref: ${GITHUB_REF}"
           NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
           echo "New version: ${NEW_VERSION}"
-          echo "Github username: ${GITHUB_ACTOR}"
+          echo "Github actor: ${GITHUB_ACTOR}"
       - name: Cache Maven packages
         uses: actions/cache@v1
         env:
@@ -86,6 +87,7 @@ jobs:
       - name: Publish to GitHub Packages Apache Maven
         run: mvn -e -X -U -Dmaven.main.skip -Dunit.test.skip -Dintegration.test.skip deploy --file pom.xml
         env:
+          GITHUB_USERNAME: x-access-token
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Site with Maven
         run: mvn -U site --file pom.xml
