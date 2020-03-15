@@ -3,9 +3,9 @@ name: Maven CI for Java
 on: [push]
 
 jobs:
-  get-context-info:
+  gihub-context-get-info:
     name: Get GitHub and Context informations
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,7 +22,8 @@ jobs:
           JOB_CONTEXT: ${{ toJson(job) }}
         run: echo "$JOB_CONTEXT"
 
-  build-test-package-deploy-maven:
+  maven-build-test-package-deploy-site:
+    name: Maven test, package and deploy Java project
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 1.8
