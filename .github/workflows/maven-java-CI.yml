@@ -54,7 +54,7 @@ jobs:
       - name: Get version
         id: build-version-initial
         run: |
-          echo "::set-env name=VERSION::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout)"
+          echo "::set-env name=MVN_VERSION::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout)"
           echo "Version initiale: ${{env.MVN_VERSION}}"
       - name: Get short SHA
         id: short-sha
