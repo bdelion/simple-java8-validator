@@ -38,6 +38,14 @@
           </snapshots>
       </repository>
   </repositories>
+  <!-- Repository pour pouvoir déployer -->
+  <distributionManagement>
+    <repository>
+      <id>github-bdelion</id>
+      <name>GitHub bdelion Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/bdelion</url>
+    </repository>
+</distributionManagement>
 
   <properties>
     <!-- Assembly -->
