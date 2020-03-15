@@ -1,0 +1,99 @@
+name: Maven CI for Java
+
+on: [push]
+
+jobs:
+  gihub-context-get-info:
+    name: Get GitHub and Context informations
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      # for debugging
+      - name: Dump env
+        run: |
+          env | sort
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+
+  maven-build-test-package-deploy-site:
+    name: Maven test, package and deploy Java project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Maven version
+        run: mvn -version
+      - name: Check out from version control
+        uses: actions/checkout@v2
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-maven-dependencies
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ env.cache-name }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-${{ env.cache-name }}-
+            ${{ runner.os }}-m2-
+            ${{ runner.os }}-
+      - name: Get groupId
+        run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.groupId' -q -DforceStdout
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get artifactId
+        run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.artifactId' -q -DforceStdout
+      - name: Get version
+        id: build-version-initial
+        run: |
+          echo "::set-env name=MVN_VERSION::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout)"
+      - name: Get short SHA
+        id: short-sha
+        run: |
+          echo "Version initiale: ${MVN_VERSION}"
+          echo "::set-env name=COMMIT_ID_SHORT::${GITHUB_SHA::8}"
+      - name: Create version number
+        id: create-version-number
+        uses: frabert/replace-string-action@v1.1
+        with:
+          pattern: '^(.*)-SNAPSHOT$'
+          string: ${{env.MVN_VERSION}}
+          replace-with: '$1-${COMMIT_ID_SHORT}-SNAPSHOT'
+      - name: Set version number
+        run: |
+          echo "New version: ${{ steps.create-version-number.outputs.replaced }}"
+          mvn versions:set -DnewVersion=${{ steps.create-version-number.outputs.replaced }}
+      - name: Build with Maven
+        run: mvn -U clean compile --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Unit Test with Maven
+        run: mvn -U -Dmaven.main.skip test --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify with Maven
+        run: mvn -U -Dmaven.main.skip -Dunit.test.skip verify --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #TODO - name: Set Leak Period [SonarQube]
+      #run: checkout du parent commun
+      #run: mvn -U clean verify '-Dmaven.test.failure.ignore=true'
+      #run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]r' '-Dsonar.buildbreaker.skip=true' '-Dsonar.projectVersion=#d0b75832'
+      #TODO - name: Quality Gate [SonarQube]
+      #run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]' '-Dsonar.gitlab.ref_name=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.commit_sha=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.project_id=3555'
+      - name: Publish to GitHub Packages Apache Maven
+        run: mvn -e -X -U -Dmaven.main.skip -Dunit.test.skip -Dintegration.test.skip deploy --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Site with Maven
+        run: mvn -U site --file pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

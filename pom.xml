@@ -8,9 +8,9 @@
     <version>8.0.0-SNAPSHOT</version>
   </parent>
   <!-- Definition de l'artefact -->
-  <groupId>fr.fifiz.socle.java</groupId>
+  <groupId>fr.fifiz.training.app.java</groupId>
   <artifactId>simple-java8-validator</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>FIFIZ :: Java App :: simple-java8-validator</name>
   <description>Application quickstart permettant de valider les évolutions du pom parent `fr.fifiz.socle.java:java-parent`</description>
@@ -24,10 +24,38 @@
     <tag>HEAD</tag>
   </scm>
 
+  <!-- Repositories nécessaire pour avoir accès aux packages GitHub -->
+  <repositories>
+      <repository>
+          <id>github</id>
+          <name>GitHub bdelion/java-parent Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/bdelion/java-parent</url>
+          <releases>
+              <enabled>true</enabled>
+          </releases>
+          <snapshots>
+              <enabled>true</enabled>
+          </snapshots>
+      </repository>
+  </repositories>
+
   <properties>
     <!-- Assembly -->
     <maven-assembly-plugin-skip>false</maven-assembly-plugin-skip>
     <main-class>fr.fifiz.socle.java.SimpleJava8ValidatorApp</main-class>
   </properties>
 
+  <dependencies>
+    <!-- Pour les tests -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>
