@@ -1,61 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <!-- Version du fichier -->
-  <modelVersion>4.0.0</modelVersion>
-  <!-- Pom parent -->
-  <parent>
-    <groupId>fr.fifiz.socle.java</groupId>
-    <artifactId>java-parent</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
-  </parent>
-  <!-- Definition de l'artefact -->
-  <groupId>fr.fifiz.training.app.java</groupId>
-  <artifactId>simple-java8-validator</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>FIFIZ :: Java App :: simple-java8-validator</name>
-  <description>Application quickstart permettant de valider les évolutions du pom parent `fr.fifiz.socle.java:java-parent`</description>
+    <!-- Version du fichier -->
+    <modelVersion>4.0.0</modelVersion>
 
-  <!-- Gestionnaire de code source -->
-  <!-- https://github.com/kevinsawicki/github-maven-example/blob/master/example/pom.xml -->
-  <scm>
-    <url>https://github.com/bdelion/simple-java8-validator.git</url>
-    <connection>scm:git:git://github.com:bdelion/simple-java8-validator.git</connection>
-    <developerConnection>scm:git:git@github.com:bdelion/simple-java8-validator.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
+    <!-- Pom parent -->
+    <parent>
+        <groupId>fr.fifiz.socle.java</groupId>
+        <artifactId>java-parent</artifactId>
+        <version>8.0.0-SNAPSHOT</version>
+    </parent>
+    <!-- Definition de l'artefact -->
+    <groupId>fr.fifiz.training.app.java</groupId>
+    <artifactId>simple-java8-validator</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>FIFIZ :: Java App :: simple-java8-validator</name>
+    <description>Application quickstart permettant de valider les évolutions du pom parent `fr.fifiz.socle.java:java-parent`</description>
 
-  <!-- Repositories nécessaire pour avoir accès aux packages GitHub -->
-  <repositories>
-      <repository>
-          <id>github</id>
-          <name>GitHub bdelion/java-parent Apache Maven Packages</name>
-          <url>https://maven.pkg.github.com/bdelion/java-parent</url>
-          <releases>
-              <enabled>true</enabled>
-          </releases>
-          <snapshots>
-              <enabled>true</enabled>
-          </snapshots>
-      </repository>
-  </repositories>
+    <!-- FIXME change it to the project's website -->
+    <url>https://bdelion.github.io/simple-java8-validator/</url>
+    <!-- FIXME add licences -->
 
-  <properties>
-    <!-- Assembly -->
-    <maven-assembly-plugin-skip>false</maven-assembly-plugin-skip>
-    <main-class>fr.fifiz.socle.java.SimpleJava8ValidatorApp</main-class>
-  </properties>
+    <organization>
+        <name>FIFIZ Company</name>
+        <url>https://bdelion.github.io/</url>
+    </organization>
 
-  <dependencies>
-    <!-- Pour les tests -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <developers>
+        <developer>
+            <id>bdelion</id>
+            <name>Bertrand Delion</name>
+            <email>bertrand.delion@free.fr</email>
+            <url>https://github.com/bdelion</url>
+            <organization>FIFIZ Company</organization>
+            <organizationUrl>https://github.com/bdelion</organizationUrl>
+            <timezone>+1</timezone>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!-- Gestionnaire de code source -->
+    <!-- https://github.com/kevinsawicki/github-maven-example/blob/master/example/pom.xml -->
+    <scm>
+        <url>https://github.com/bdelion/simple-java8-validator.git</url>
+        <connection>scm:git:git://github.com:bdelion/simple-java8-validator.git</connection>
+        <developerConnection>scm:git:git@github.com:bdelion/simple-java8-validator.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <issueManagement>
+        <url>https://github.com/bdelion/simple-java8-validator/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+    <ciManagement>
+        <system>GitHub Actions</system>
+        <url>https://github.com/bdelion/simple-java8-validator/actions</url>
+    </ciManagement>
+
+    <!-- Repositories nécessaire pour avoir accès aux packages GitHub -->
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub bdelion/maven-packages Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/bdelion/maven-packages</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <properties>
+        <!-- Assembly -->
+        <maven-assembly-plugin-skip>false</maven-assembly-plugin-skip>
+        <main-class>fr.fifiz.socle.java.SimpleJava8ValidatorApp</main-class>
+    </properties>
+
+    <dependencies>
+        <!-- Pour les tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

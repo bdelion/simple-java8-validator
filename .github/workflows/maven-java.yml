@@ -1,0 +1,110 @@
+name: Maven CI for Java
+
+on: [push]
+
+jobs:
+  gihub-context-get-info:
+    name: Get GitHub and Context informations
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump env
+        run: |
+          env | sort
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+
+  maven-build-test-package-deploy-site:
+    name: Maven test, package and deploy Java project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Maven version
+        run: mvn -version --file pom.xml --settings .github/workflows/settings.xml
+        env:
+          SERVER_USERNAME: $GITHUB_ACTOR
+          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
+      - name: Check out from version control
+        uses: actions/checkout@v2
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-maven-dependencies
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ env.cache-name }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-${{ env.cache-name }}-
+            ${{ runner.os }}-m2-
+            ${{ runner.os }}-
+      - name: Get groupId
+        run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.groupId' -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml
+        env:
+          SERVER_USERNAME: $GITHUB_ACTOR
+          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
+      - name: Get artifactId
+        run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.artifactId' -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml
+        env:
+          SERVER_USERNAME: $GITHUB_ACTOR
+          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
+      - name: Get version
+        id: build-version-initial
+        run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml
+        env:
+          SERVER_USERNAME: $GITHUB_ACTOR
+          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
+      #TODEL - name: Get short SHA
+      #TODEL   id: short-sha
+      #TODEL   run: |
+      #TODEL     echo "Version initiale: ${MVN_VERSION}"
+      #TODEL     echo "::set-env name=COMMIT_ID_SHORT::${GITHUB_SHA::8}"
+      #TODEL - name: Create version number
+      #TODEL   id: create-version-number
+      #TODEL   uses: frabert/replace-string-action@v1.1
+      #TODEL   with:
+      #TODEL     pattern: "^(.*)-SNAPSHOT$"
+      #TODEL     string: ${{env.MVN_VERSION}}
+      #TODEL     replace-with: "$1-${COMMIT_ID_SHORT}-SNAPSHOT"
+      #TODEL - name: Set version number
+      #TODEL   run: |
+      #TODEL     echo "New version: ${{ steps.create-version-number.outputs.replaced }}"
+      #TODEL     mvn versions:set -DnewVersion=${{ steps.create-version-number.outputs.replaced }}
+      - name: Build with Maven
+        run: mvn -U clean compile -Pproject-controls-check --file pom.xml --settings .github/workflows/settings.xml
+        env:
+          SERVER_USERNAME: $GITHUB_ACTOR
+          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
+      - name: Unit Test with Maven
+        run: mvn -U -Dmaven.main.skip test --file pom.xml --settings .github/workflows/settings.xml
+        env:
+          SERVER_USERNAME: $GITHUB_ACTOR
+          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
+      - name: Verify with Maven
+        run: mvn -U -Dmaven.main.skip -Dunit.test.skip verify --file pom.xml --settings .github/workflows/settings.xml
+        env:
+          SERVER_USERNAME: $GITHUB_ACTOR
+          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
+      #TODO - name: Set Leak Period [SonarQube]
+      #TODO run: checkout du parent commun
+      #TODO run: mvn -U clean verify '-Dmaven.test.failure.ignore=true'
+      #TODO run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]r' '-Dsonar.buildbreaker.skip=true' '-Dsonar.projectVersion=#d0b75832'
+      #TODO - name: Quality Gate [SonarQube]
+      #TODO run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]' '-Dsonar.gitlab.ref_name=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.commit_sha=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.project_id=3555'
+      - name: Publish to GitHub Packages Apache Maven
+        run: mvn -U -Dmaven.main.skip -Dunit.test.skip -Dintegration.test.skip deploy --file pom.xml --settings .github/workflows/settings.xml
+        env:
+          SERVER_USERNAME: $GITHUB_ACTOR
+          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
+      - name: Site with Maven
+        run: mvn -U site --file pom.xml --settings .github/workflows/settings.xml
+        env:
+          SERVER_USERNAME: $GITHUB_ACTOR
+          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
