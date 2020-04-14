@@ -7,9 +7,6 @@ jobs:
     name: Get GitHub and Context informations
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      # for debugging
       - name: Dump env
         run: |
           env | sort
