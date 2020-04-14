@@ -36,6 +36,8 @@ Pour exécuter localement `simple-java8-validator`, il faut :
 ## :construction_worker: Fabriqué avec
 
 * [Visual Studio Code] - Editeur de code source.
+* [Maven] - Outil de gestion et d'automatisation de production des projets logiciels.
+* [Travis CI] - Logiciel libre d'intégration continue.
 
 ## :busts_in_silhouette: Authors
 
@@ -78,6 +80,8 @@ Pour les versions disponibles, voir [les tags de ce projet].
 [Homepage]: https://github.com/bdelion/simple-java8-validator/tree/master
 [simple-java8-validator-1.0.0-jar-with-dependencies.jar]: https://github.com/bdelion/maven-packages/packages/183594?version=1.0.0
 [Visual Studio Code]: https://code.visualstudio.com/
+[Maven]: https://maven.apache.org/
+[Travis CI]: https://travis-ci.com/
 [@bdelion]: https://github.com/bdelion
 [contributeurs]: https://github.com/bdelion/simple-java8-validator/graphs/contributors
 [CHANGELOG]: CHANGELOG.md
