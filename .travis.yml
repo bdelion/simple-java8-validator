@@ -10,5 +10,5 @@ script:
   - mvn -U clean compile -Pproject-controls-check --file pom.xml --settings .github/workflows/settings.xml
   - mvn -U -Dmaven.main.skip test --file pom.xml --settings .github/workflows/settings.xml
   - mvn -U -Dmaven.main.skip -Dunit.test.skip verify --file pom.xml --settings .github/workflows/settings.xml
-  - mvn -U -Dmaven.main.skip -Dunit.test.skip -Dintegration.test.skip deploy --file pom.xml --settings .github/workflows/settings.xml
+  - mvn -U -Dmaven.main.skip -Dunit.test.skip -Dverify.skip source:jar-no-fork@attach-sources javadoc:jar@attach-javadocs deploy --file pom.xml --settings .github/workflows/settings.xml
   - mvn -U site --file pom.xml --settings .github/workflows/settings.xml
