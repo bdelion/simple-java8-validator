@@ -21,16 +21,33 @@
                     </releases>
                 </repository>
                 <repository>
-                    <id>github</id>
+                    <id>github-snapshot</id>
                     <name>GitHub Release bdelion/maven-packages Apache Maven Packages</name>
                     <url>https://maven.pkg.github.com/bdelion/maven-packages</url>
           <snapshots>
                         <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </snapshots>
+                    <releases>
+                        <enabled>false</enabled>
                         <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>warn</checksumPolicy>
+                    </releases>
+                </repository>
+                <repository>
+                    <id>github-release</id>
+                    <name>GitHub Release bdelion/maven-packages Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/bdelion/maven-packages</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                        <!--                         <updatePolicy>never</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy> -->
                     </snapshots>
                     <releases>
                         <enabled>true</enabled>
-                        <updatePolicy>daily</updatePolicy>
+                        <!--                         <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>warn</checksumPolicy> -->
           </releases>
                 </repository>
             </repositories>
@@ -40,6 +57,16 @@
     <servers>
         <server>
             <id>github</id>
+            <username>${env.SERVER_USERNAME}</username>
+            <password>${env.SERVER_PASSWORD}</password>
+        </server>
+        <server>
+            <id>github-snapshot</id>
+            <username>${env.SERVER_USERNAME}</username>
+            <password>${env.SERVER_PASSWORD}</password>
+        </server>
+        <server>
+            <id>github-release</id>
             <username>${env.SERVER_USERNAME}</username>
             <password>${env.SERVER_PASSWORD}</password>
         </server>
