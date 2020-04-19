@@ -28,7 +28,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Maven version
-        run: mvn -version --file pom.xml --settings .github/workflows/settings.xml
+        run: mvn -version
         env:
           SERVER_USERNAME: $GITHUB_ACTOR
           SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
