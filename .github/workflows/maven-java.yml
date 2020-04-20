@@ -18,6 +18,22 @@ jobs:
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
         run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
 
   maven-build-test-package-deploy-site:
     name: Maven test, package and deploy Java project
@@ -34,7 +50,7 @@ jobs:
           SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
       - name: Check out from version control
         uses: actions/checkout@v2
-      - name: Cache Maven packages
+      - name: Cache Maven dependencies
         uses: actions/cache@v1
         env:
           cache-name: cache-maven-dependencies
@@ -45,38 +61,33 @@ jobs:
             ${{ runner.os }}-m2-${{ env.cache-name }}-
             ${{ runner.os }}-m2-
             ${{ runner.os }}-
-      - name: Get groupId
-        run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.groupId' -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml
+      - name: Get Maven Project information
+        id: maven-project-info
+        run: |
+          echo "$(mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
+          echo "$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
+          echo "::set-output name=VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
+          echo "::set-output name=PACKAGING::$(mvn help:evaluate -Dexpression=project.packaging -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
         env:
           SERVER_USERNAME: $GITHUB_ACTOR
           SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
-      - name: Get artifactId
-        run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.artifactId' -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml
-        env:
-          SERVER_USERNAME: $GITHUB_ACTOR
-          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
-      - name: Get version
-        id: build-version-initial
-        run: mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate '-Dexpression=project.version' -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml
-        env:
-          SERVER_USERNAME: $GITHUB_ACTOR
-          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
-      #TODEL - name: Get short SHA
-      #TODEL   id: short-sha
-      #TODEL   run: |
-      #TODEL     echo "Version initiale: ${MVN_VERSION}"
-      #TODEL     echo "::set-env name=COMMIT_ID_SHORT::${GITHUB_SHA::8}"
-      #TODEL - name: Create version number
-      #TODEL   id: create-version-number
-      #TODEL   uses: frabert/replace-string-action@v1.1
-      #TODEL   with:
-      #TODEL     pattern: "^(.*)-SNAPSHOT$"
-      #TODEL     string: ${{env.MVN_VERSION}}
-      #TODEL     replace-with: "$1-${COMMIT_ID_SHORT}-SNAPSHOT"
-      #TODEL - name: Set version number
-      #TODEL   run: |
-      #TODEL     echo "New version: ${{ steps.create-version-number.outputs.replaced }}"
-      #TODEL     mvn versions:set -DnewVersion=${{ steps.create-version-number.outputs.replaced }}
+      - name: Get short SHA
+        id: short-sha
+        run: |
+          echo "Maven Project version: ${{ steps.maven-project-info.outputs.VERSION }}"
+          echo "::set-output name=COMMIT_ID_SHORT::${GITHUB_SHA::8}"
+      - name: Create version number
+        id: create-version-number
+        uses: frabert/replace-string-action@v1.1
+        with:
+          pattern: "^(.*)-SNAPSHOT$"
+          string: ${{ steps.maven-project-info.outputs.VERSION }}
+          replace-with: "$1-${{ steps.short-sha.outputs.COMMIT_ID_SHORT }}-SNAPSHOT"
+      - name: Set version number
+        if: endsWith( steps.maven-project-info.outputs.VERSION, '-SNAPSHOT' ) && ( steps.maven-project-info.outputs.PACKAGING != 'pom' )
+        run: |
+          echo "New version: ${{ steps.create-version-number.outputs.replaced }}"
+          mvn versions:set -DnewVersion=${{ steps.create-version-number.outputs.replaced }} --file pom.xml
       - name: Build with Maven
         run: mvn -U clean compile -Pproject-controls-check --file pom.xml --settings .github/workflows/settings.xml
         env:
