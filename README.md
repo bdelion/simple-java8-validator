@@ -35,15 +35,15 @@ Pour exécuter localement `simple-java8-validator`, il faut :
 
 ## :construction_worker: Fabriqué avec
 
-* [Visual Studio Code] - Editeur de code source.
-* [Maven] - Outil de gestion et d'automatisation de production des projets logiciels.
-* [Travis CI] - Logiciel libre d'intégration continue.
+-   [Visual Studio Code] - Editeur de code source.
+-   [Maven] - Outil de gestion et d'automatisation de production des projets logiciels.
+-   [Travis CI] - Logiciel libre d'intégration continue.
 
 ## :busts_in_silhouette: Authors
 
 :bust_in_silhouette: **Bertrand DELION**
 
-* Github: [@bdelion]
+-   Github: [@bdelion]
 
 Voir aussi la liste des [contributeurs] ayant participés à ce projet.
 
@@ -64,33 +64,32 @@ Pour les versions disponibles, voir [les tags de ce projet].
 
 ## :link: Liens utiles
 
-* :pencil: Documentation : [Wiki]
-* :building_construction: Build :
-  * [Job Travis CI]
-  * [Github Actions]
-* Repository : [GitHub Package Registry]
+-   :pencil: Documentation : [Wiki]
+-   :building_construction: Build :
+    -   [Job Travis CI]
+    -   [Github Actions]
+-   Repository : [GitHub Package Registry]
 
 ## :spider_web: Dependency
 
-* [Dependencies] - Dépendances de ce projet
-* [Dependents] - Projets dépendants de celui-ci
+-   [Dependencies] - Dépendances de ce projet
+-   [Dependents] - Projets dépendants de celui-ci
 
-
-[Make a README]: https://www.makeareadme.com/#template-1
-[Homepage]: https://github.com/bdelion/simple-java8-validator/tree/master
+[make a readme]: https://www.makeareadme.com/#template-1
+[homepage]: https://github.com/bdelion/simple-java8-validator/tree/master
 [simple-java8-validator-1.0.0-jar-with-dependencies.jar]: https://github.com/bdelion/maven-packages/packages/183594?version=1.0.0
-[Visual Studio Code]: https://code.visualstudio.com/
-[Maven]: https://maven.apache.org/
-[Travis CI]: https://travis-ci.com/
+[visual studio code]: https://code.visualstudio.com/
+[maven]: https://maven.apache.org/
+[travis ci]: https://travis-ci.com/
 [@bdelion]: https://github.com/bdelion
 [contributeurs]: https://github.com/bdelion/simple-java8-validator/graphs/contributors
-[CHANGELOG]: CHANGELOG.md
+[changelog]: CHANGELOG.md
 [issues]: https://github.com/bdelion/simple-java8-validator/issues
-[SemVer]: http://semver.org/
+[semver]: http://semver.org/
 [les tags de ce projet]: https://github.com/bdelion/simple-java8-validator/tags
-[Wiki]: https://github.com/bdelion/simple-java8-validator/wiki
-[Job Travis CI]: https://travis-ci.com/bdelion/simple-java8-validator
-[Github Actions]: https://github.com/bdelion/simple-java8-validator/actions
-[GitHub Package Registry]: https://github.com/bdelion/simple-java8-validator/packages
-[Dependencies]: https://github.com/bdelion/simple-java8-validator/network/dependencies
-[Dependents]: https://github.com/bdelion/simple-java8-validator/network/dependents
+[wiki]: https://github.com/bdelion/simple-java8-validator/wiki
+[job travis ci]: https://travis-ci.com/bdelion/simple-java8-validator
+[github actions]: https://github.com/bdelion/simple-java8-validator/actions
+[github package registry]: https://github.com/bdelion/simple-java8-validator/packages
+[dependencies]: https://github.com/bdelion/simple-java8-validator/network/dependencies
+[dependents]: https://github.com/bdelion/simple-java8-validator/network/dependents
