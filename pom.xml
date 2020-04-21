@@ -77,7 +77,7 @@
   <properties>
     <!-- Assembly -->
     <maven-assembly-plugin-skip>false</maven-assembly-plugin-skip>
-    <main-class>fr.fifiz.socle.java.SimpleJava8ValidatorApp</main-class>
+    <main-class>fr.fifiz.training.app.java.SimpleJava8ValidatorApp</main-class>
   </properties>
 
   <dependencies>
