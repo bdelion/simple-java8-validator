@@ -1,4 +1,4 @@
-package fr.fifiz.training.app.java;
+package fr.fifiz.socle.java;
 
 /**
  * Hello world!
