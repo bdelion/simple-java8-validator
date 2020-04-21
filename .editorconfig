@@ -1,17 +1,6 @@
-# Version: 1.5.0 (Using https://semver.org/)
-# Updated: 2020-03-09
-# See https://github.com/RehanSaeed/EditorConfig/releases for release notes.
-# See https://github.com/RehanSaeed/EditorConfig for updates to this file.
-# See http://EditorConfig.org for more information about .editorconfig files.
-
-##########################################
-# Common Settings
-##########################################
-
-# This file is the top-most EditorConfig file
+# Editor configuration, see http://editorconfig.org
 root = true
 
-# All Files
 [*]
 charset = utf-8
 indent_style = space
@@ -21,41 +10,20 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 max_line_length = 80
 
-##########################################
-# File Extension Settings
-##########################################
-
-# XML Configuration Files
-[*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct}]
-indent_size = 2
-
-# JSON Files
-[*.{json,json5,webmanifest}]
-indent_size = 2
-
-# YAML Files
-[*.{yml,yaml}]
-indent_size = 2
-
-# Markdown Files
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
 
-# Web Files
-[*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,svg,vue}]
-indent_size = 2
+[*.yml]
+indent_size = 4
 
-# Batch Files
-[*.{cmd,bat}]
-end_of_line = crlf
-
-# Bash Files
 [*.sh]
 end_of_line = lf
 
-# Java Files
 [*.java]
 indent_size = 4
 max_line_length = 120
 continuation_indent_size = 8
+
+[*.xml]
+indent_size = 4
