@@ -1,45 +1,16 @@
-name: Maven CI for Java
+name: Maven CI for Java for Feature/Bugfix Branch
 
 on:
   push:
     branches-ignore:
-      - 'feature/*'
-      - 'bugfix/*'
+      - 'develop'
+      - 'release/*'
+      - 'master'
+      - 'hotfix/*'
+      - 'support/*'
 
 jobs:
-  gihub-context-get-info:
-    name: Get GitHub and Context informations
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dump env
-        run: |
-          env | sort
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo "$RUNNER_CONTEXT"
-      - name: Dump strategy context
-        env:
-          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-        run: echo "$STRATEGY_CONTEXT"
-      - name: Dump matrix context
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-        run: echo "$MATRIX_CONTEXT"
-
-  maven-build-test-package-deploy-site:
+  maven-build-test-verify:
     name: Maven test, package and deploy Java project
     runs-on: ubuntu-latest
     steps:
@@ -70,28 +41,11 @@ jobs:
         run: |
           echo "$(mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
           echo "$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
-          echo "::set-output name=VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
-          echo "::set-output name=PACKAGING::$(mvn help:evaluate -Dexpression=project.packaging -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
+          echo "$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
+          echo "$(mvn help:evaluate -Dexpression=project.packaging -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
         env:
           SERVER_USERNAME: $GITHUB_ACTOR
           SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
-      - name: Get short SHA
-        id: short-sha
-        run: |
-          echo "Maven Project version: ${{ steps.maven-project-info.outputs.VERSION }}"
-          echo "::set-output name=COMMIT_ID_SHORT::${GITHUB_SHA::8}"
-      - name: Create version number
-        id: create-version-number
-        uses: frabert/replace-string-action@v1.1
-        with:
-          pattern: "^(.*)-SNAPSHOT$"
-          string: ${{ steps.maven-project-info.outputs.VERSION }}
-          replace-with: "$1-${{ steps.short-sha.outputs.COMMIT_ID_SHORT }}-SNAPSHOT"
-      - name: Set version number
-        if: endsWith( steps.maven-project-info.outputs.VERSION, '-SNAPSHOT' ) && ( steps.maven-project-info.outputs.PACKAGING != 'pom' )
-        run: |
-          echo "New version: ${{ steps.create-version-number.outputs.replaced }}"
-          mvn versions:set -DnewVersion=${{ steps.create-version-number.outputs.replaced }} --file pom.xml
       - name: Build with Maven
         run: mvn -U clean compile -Pproject-controls-check --file pom.xml --settings .github/workflows/settings.xml
         env:
@@ -113,13 +67,3 @@ jobs:
       #TODO run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]r' '-Dsonar.buildbreaker.skip=true' '-Dsonar.projectVersion=#d0b75832'
       #TODO - name: Quality Gate [SonarQube]
       #TODO run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]' '-Dsonar.gitlab.ref_name=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.commit_sha=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.project_id=3555'
-      - name: Publish to GitHub Packages Apache Maven
-        run: mvn -U -Dmaven.main.skip -Dunit.test.skip -Dverify.skip jar:jar@default-jar assembly:single@make-assembly source:jar-no-fork@attach-sources javadoc:jar@attach-javadocs deploy --file pom.xml --settings .github/workflows/settings.xml
-        env:
-          SERVER_USERNAME: $GITHUB_ACTOR
-          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
-      - name: Site with Maven
-        run: mvn -U site --file pom.xml --settings .github/workflows/settings.xml
-        env:
-          SERVER_USERNAME: $GITHUB_ACTOR
-          SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
