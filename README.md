@@ -6,9 +6,7 @@
 
 ![Maven CI for Java](https://github.com/bdelion/simple-java8-validator/workflows/Maven%20CI%20for%20Java/badge.svg?branch=develop) [![Travis CI Build Status](https://travis-ci.com/bdelion/simple-java8-validator.svg?branch=develop)](https://travis-ci.com/bdelion/simple-java8-validator)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=feature%2Fissue-30&project=fr.fifiz.training.app.java%3Asimple-java8-validator&metric=alert_status)](https://sonarcloud.io/dashboard?id=fr.fifiz.training.app.java%3Asimple-java8-validator&branch=feature%2Fissue-30)
-
-[![Known Vulnerabilities](https://snyk.io/test/github/bdelion/simple-java8-validator/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/bdelion/simple-java8-validator?targetFile=pom.xml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=fr.fifiz.training.app.java%3Asimple-java8-validator&metric=alert_status)](https://sonarcloud.io/dashboard?id=fr.fifiz.training.app.java%3Asimple-java8-validator&branch=develop) [![Known Vulnerabilities](https://snyk.io/test/github/bdelion/simple-java8-validator/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/bdelion/simple-java8-validator?targetFile=pom.xml)
 
 <p>
 <a href="https://sourcerer.io/bdelion"><img src="https://sourcerer.io/icons/logo-sharing.svg" height="24px" alt="Sourcerer"></a> <a href="https://www.gitmemory.com/bdelion"><img src="https://www.gitmemory.com/images/logo.png" height="24px" alt="gitMemory"></a>

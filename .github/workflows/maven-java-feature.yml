@@ -3,11 +3,11 @@ name: Maven CI for Java for Feature/Bugfix Branch
 on:
   push:
     branches-ignore:
-      - "develop"
-      - "release/*"
-      - "master"
-      - "hotfix/*"
-      - "support/*"
+      - 'develop'
+      - 'release/*'
+      - 'master'
+      - 'hotfix/*'
+      - 'support/*'
 
 jobs:
   maven-build-test-verify:
@@ -43,6 +43,8 @@ jobs:
           echo "$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
           echo "$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
           echo "$(mvn help:evaluate -Dexpression=project.packaging -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
+          echo "::set-output name=SONAR_HOST_URL::$(mvn help:evaluate -Dexpression=sonar.host.url -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
+          echo "::set-output name=SONAR_PROJECT_KEY::$(mvn help:evaluate -Dexpression=sonar.projectKey -q -DforceStdout --file pom.xml --settings .github/workflows/settings.xml)"
         env:
           SERVER_USERNAME: $GITHUB_ACTOR
           SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
@@ -61,14 +63,17 @@ jobs:
         env:
           SERVER_USERNAME: $GITHUB_ACTOR
           SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
-      #TODO - name: Set Leak Period [SonarQube]
+      #TODO - name: Set Leak Period [SonarCloud.io]
       #TODO run: checkout du parent commun
       #TODO run: mvn -U clean verify '-Dmaven.test.failure.ignore=true'
       #TODO run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]r' '-Dsonar.buildbreaker.skip=true' '-Dsonar.projectVersion=#d0b75832'
-      - name: Quality Gate [SonarQube]
-        #TODO run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]' '-Dsonar.gitlab.ref_name=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.commit_sha=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.project_id=3555'
+      - name: Quality Gate [SonarCloud.io]
+      #TODO run: mvn -U '-Dsonar.links.scm=http://gitxxx' '-Dsonar.links.ci=http://jenkinsxxx' org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar '-Dsonar.projectKey=[groupId]-[artifactId]' '-Dsonar.branch.name=develop' '-Dsonar.projectName=[artifactId]' '-Dsonar.gitlab.ref_name=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.commit_sha=b7c32ea3401d64f97eecc4dd46de331b00391cd7' '-Dsonar.gitlab.project_id=3555'
         run: mvn -U -Dsonar.branch.name=${GITHUB_REF#refs/heads/} -Dsonar.gitlab.commit_sha=${GITHUB_SHA} sonar:sonar --file pom.xml --settings .github/workflows/settings.xml
         env:
           SERVER_USERNAME: $GITHUB_ACTOR
           SERVER_PASSWORD: ${{ secrets.MVN_PCKGS_REPO_TOKEN}}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Add tags [SonarCloud.io]
+        run: |
+          curl -u "${{ secrets.SONAR_TOKEN }}" -X POST "${{ steps.maven-project-info.outputs.SONAR_HOST_URL }}/api/project_tags/set?project=${{ steps.maven-project-info.outputs.SONAR_PROJECT_KEY }}&tags=training.app,java"
