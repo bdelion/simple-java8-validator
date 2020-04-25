@@ -76,4 +76,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Add tags [SonarCloud.io]
         run: |
-          curl -u "${{ secrets.SONAR_TOKEN }}" -X POST "${{ steps.maven-project-info.outputs.SONAR_HOST_URL }}/api/project_tags/set?project=${{ steps.maven-project-info.outputs.SONAR_PROJECT_KEY }}&tags=training.app,java"
+          curl -u "${{ secrets.SONAR_TOKEN }}" -X POST "${{ steps.maven-project-info.outputs.SONAR_HOST_URL }}/api/project_tags/set?project=${{ steps.maven-project-info.outputs.SONAR_PROJECT_KEY }}&tags=training-app,java"
