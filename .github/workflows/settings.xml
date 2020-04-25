@@ -45,7 +45,9 @@
     </server>
   </servers>
 
-  <pluginGroups></pluginGroups>
+  <pluginGroups>
+    <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+  </pluginGroups>
   <proxies></proxies>
   <mirrors></mirrors>
 </settings>

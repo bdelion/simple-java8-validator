@@ -29,6 +29,7 @@ jobs:
         - mvn -U clean compile -Pproject-controls-check --file pom.xml --settings .github/workflows/settings.xml
         - mvn -U -Dmaven.main.skip test --file pom.xml --settings .github/workflows/settings.xml
         - mvn -U -Dmaven.main.skip -Dunit.test.skip verify --file pom.xml --settings .github/workflows/settings.xml
+        - mvn -U -Dsonar.branch.name=${GITHUB_REF#refs/heads/} -Dsonar.gitlab.commit_sha=${GITHUB_SHA} sonar:sonar --file pom.xml --settings .github/workflows/settings.xml
 
     - stage: Deploy and make Site
       name: Publish to GitHub Packages Apache Maven
