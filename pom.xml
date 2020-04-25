@@ -78,15 +78,6 @@
     <!-- Assembly -->
     <maven-assembly-plugin-skip>false</maven-assembly-plugin-skip>
     <main-class>fr.fifiz.training.app.java.SimpleJava8ValidatorApp</main-class>
-    <!-- Code Quality -->
-    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.organization>bdelion-github</sonar.organization>
-    <sonar.projectKey>${project.groupId}:${project.artifactId}</sonar.projectKey>
-    <sonar.projectName>${project.name}</sonar.projectName>
-    <sonar.projectVersion>${project.version}</sonar.projectVersion>
-    <sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
-    <sonar.junit.reportPaths>${surefire.reportsDirectory}</sonar.junit.reportPaths>
-    <sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco-it/jacoco.xml,${project.reporting.outputDirectory}/jacoco-ut/jacoco.xml,${project.reporting.outputDirectory}/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
   </properties>
 
   <dependencies>

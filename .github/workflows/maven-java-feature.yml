@@ -8,7 +8,6 @@ on:
       - 'master'
       - 'hotfix/*'
       - 'support/*'
-      - 'feature/*'
 
 jobs:
   maven-build-test-verify:
